@@ -14,12 +14,31 @@ function App() {
               params={{
             		particles: {
                   number:{
-                    value:30,
+                    value:120,
                     density:{
                       enable:true,
-                      value_area:800
+                      value_area:1000
                     }
-                  }}
+                  },
+                  line_linked:{
+                    shadow:{
+                      enable:true,
+                      color:'#003f5c'
+                    }
+                  },
+                color:{
+                  value: '#003f5c'
+                },
+                links:{
+                  color: '#003f5c'
+                }}
+              }}
+              options={{
+                background: {
+                  color: {
+                    value: "003f5c",
+                  }
+                }
               }}
             />
       <Navigation/>
