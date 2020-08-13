@@ -1,30 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
+const knex = require('knex')({
+    client: 'pg',
+    connection:{
+        host: '127.0.0.1',
+        user: 'postgres',
+        password: 'postgres',
+        database: 'smartbrain'
+    }
+});
 
+knex.select('*').from('users').then(data => {
+    console.log(data)
+});
 
 const app = express();
 
 app.use(bodyParser.json());
-const database = {
-    users: [
-        {
-            id:'123',
-            name:'john',
-            email:'john@gmail.com',
-            password: 'cookies',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id:'124',
-            name:'sarah',
-            email:'sarah@gmail.com',
-            password: 'icecream',
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
+app.use(cors())
 
 app.get('/', (req, res)=>{
     res.send(database.users)
@@ -32,7 +26,7 @@ app.get('/', (req, res)=>{
 
 app.post('/signin', (req,res)=> {
     if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
-        res.json('success')
+        res.json(database.users[0])
     } else {
         res.status(400).json('error loggin in')
     }
@@ -40,14 +34,11 @@ app.post('/signin', (req,res)=> {
 
 app.post('/register', (req,res)=> {
     const { email, name, password} = req.body;
-    database.users.push({
-        id:'125',
-        name: name,
+    knex('users').insert({
         email: email,
-        password: password,
-        entries: 0,
+        name: name,
         joined: new Date()
-    })
+    }).then(console.log)
     res.json(database.users[database.users.length-1])
 })
 
@@ -65,7 +56,7 @@ app.get('/profile/:id', (req,res) =>{
     }
 })
 
-app.post('/image', (req,res)=> {
+app.put('/image', (req,res)=> {
     const { id }  = req.body;
     let found = false;
     database.users.forEach(user => {
