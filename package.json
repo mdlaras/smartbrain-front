@@ -1,6 +1,5 @@
 {
   "name": "facedetector",
-  "homepage": "https://mdlaras.github.io/facedetector",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
